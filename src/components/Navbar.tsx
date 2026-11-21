@@ -46,6 +46,7 @@ export function Navbar() {
                 className="flex items-center gap-2 rounded-full border p-1.5"
                 style={{ borderColor: 'var(--line)' }}
               >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={
                     user.image ||

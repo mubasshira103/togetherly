@@ -43,7 +43,6 @@ export default function CreateEvent() {
           imageURL: form.imageUrl,
           location: form.location,
           eventDate: form.eventDate,
-          creatorEmail: session?.user.email,
         }),
       });
       toast.success('Your event has been created');

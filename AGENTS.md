@@ -24,12 +24,14 @@ Single Next.js 16 App Router app (not a monorepo). No test runner, no CI, no for
 - Pages live in `src/app/`; data pages (events, profile, create-event, …) are `'use client'` components fetching in `useEffect`, not server-fetched.
 - **Two backends:**
   1. **better-auth** — catch-all handler `src/app/api/auth/[...all]/route.ts`, config in `src/lib/auth.ts` → MongoDB (`MONGODB_URL`, database `ticketoDb`). The server enables the `jwt` plugin to match the client's `jwtClient()`. `src/lib/api.ts` attaches the session JWT as `Authorization: Bearer`.
-  2. **Sibling Express API** — `../togetherly-server` (port 5000; client default `http://localhost:5000/api`). It does **not** verify the bearer token: it trusts `creatorEmail` (create) and `userEmail` (join) from the request. Start it separately with `node index.js` in that repo.
+  2. **Sibling Express API** — `../togetherly-server` (port 5000; client default `http://localhost:5000/api`). Start it separately with `node index.js` in that repo.
+     - **Auth:** every mutating route (and `/joins`, `/me/*`) requires `Authorization: Bearer <jwt>`. The server verifies the signature against the Next app's JWKS (`${AUTH_URL || CLIENT_URL}/api/auth/jwks`) with `issuer`/`audience` = that same URL. Identity (`sub`, `email`, `name`) comes only from the verified token — body/query identity is ignored.
+     - **Ownership:** events store `creatorId`, `creatorEmail`, `creatorName`; `PATCH`/`DELETE /events/:id` return `403` unless `creatorId` matches (or the legacy `creatorEmail` matches). `/me/events` and `/me/joined` only return the caller's rows.
 - **API contract** (match exactly — responses are raw arrays/objects, not `{ events }` wrappers):
   - `GET /events` → `EventItem[]` (future events only), `GET /events/recent?limit=` → `EventItem[]`
-  - `GET /events/:id` → `EventItem` · `POST /events` · `PATCH /events/:id` · `DELETE /events/:id`
-  - `POST /events/:id/join` body `{ userEmail, userName }`
-  - `GET /joins?email=` → `JoinedEvent[]`
+  - `GET /events/:id` → `EventItem` · `POST /events` (auth) · `PATCH /events/:id` (auth, owner) · `DELETE /events/:id` (auth, owner)
+  - `POST /events/:id/join` (auth, no body needed) · `GET /joins` (auth)
+  - `GET /me/events` (auth) → `EventItem[]` created by the caller · `GET /me/joined` (auth) → `EventItem[]` joined by the caller
   - Field names are `eventType` / `imageURL` (not `type` / `imageUrl`); the types live in `src/types/index.ts`.
 - `.env` is gitignored (`.env*`) and must provide `MONGODB_URL`, `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL`, `NEXT_PUBLIC_BETTER_AUTH_URL`, `NEXT_PUBLIC_API_URL`.
 - Path alias `@/*` → `src/*`.

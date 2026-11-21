@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import Link from 'next/link';
 import { MapPin, CalendarDays, ArrowUpRight } from 'lucide-react';
 import type { EventItem } from '@/types';
@@ -8,7 +9,7 @@ export type EventCardData = Pick<EventItem, '_id' | 'title' | 'location' | 'even
   description?: string;
 };
 
-export function EventCard({ event }: { event: EventCardData }) {
+export function EventCard({ event, actions }: { event: EventCardData; actions?: ReactNode }) {
   return (
     <article className="card flex h-full flex-col">
       <div className="relative h-52">
@@ -38,9 +39,12 @@ export function EventCard({ event }: { event: EventCardData }) {
             {new Date(event.eventDate).toLocaleDateString()}
           </span>
         </div>
-        <Link href={`/events/${event._id}`} className="btn btn-outline mt-5 w-full text-sm">
-          View event <ArrowUpRight size={16} />
-        </Link>
+        <div className="mt-auto pt-5">
+          <Link href={`/events/${event._id}`} className="btn btn-outline w-full text-sm">
+            View event <ArrowUpRight size={16} />
+          </Link>
+          {actions && <div className="mt-3 flex gap-2">{actions}</div>}
+        </div>
       </div>
     </article>
   );

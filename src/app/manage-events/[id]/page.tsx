@@ -39,7 +39,21 @@ function EditEvent() {
     let active = true;
     api<EventItem>(`/events/${id}`)
       .then((data) => {
-        if (active) setEvent(data);
+        if (!active) return;
+
+        const userId = session.user.id;
+        const email = session.user.email.toLowerCase();
+        const ownsEvent =
+          (data.creatorId && data.creatorId === userId) ||
+          (data.creatorEmail && data.creatorEmail.toLowerCase() === email);
+
+        if (!ownsEvent) {
+          toast.error('You can only update your own events.');
+          router.replace('/manage-events');
+          return;
+        }
+
+        setEvent(data);
       })
       .catch(() => {
         if (active) toast.error('Unable to load event');

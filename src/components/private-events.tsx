@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { authClient } from '@/lib/auth-client';
 import { api } from '@/lib/api';
-import type { EventItem, JoinedEvent } from '@/types';
+import type { EventItem } from '@/types';
 import { EventCard, type EventCardData } from './event-card';
 
 export function PrivateEvents({ mode }: { mode: 'joined' | 'manage' }) {
@@ -22,22 +22,8 @@ export function PrivateEvents({ mode }: { mode: 'joined' | 'manage' }) {
     }
 
     let active = true;
-    const email = session.user.email.toLowerCase();
 
-    const request =
-      mode === 'joined'
-        ? api<JoinedEvent[]>(`/joins?email=${encodeURIComponent(email)}`).then((joins) =>
-            joins.map((join) => ({
-              _id: join.eventId,
-              title: join.eventTitle,
-              location: join.location,
-              eventDate: join.eventDate,
-              imageURL: join.eventImage,
-            }))
-          )
-        : api<EventItem[]>('/events').then((list) =>
-            list.filter((event) => event.creatorEmail?.toLowerCase() === email)
-          );
+    const request = api<EventItem[]>(mode === 'joined' ? '/me/joined' : '/me/events');
 
     request
       .then((list) => {
@@ -78,25 +64,29 @@ export function PrivateEvents({ mode }: { mode: 'joined' | 'manage' }) {
       </h1>
       <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {events.map((event) => (
-          <div key={event._id}>
-            <EventCard event={event} />
-            {mode === 'manage' && (
-              <div className="mt-2 flex gap-2">
-                <button
-                  className="btn btn-outline flex-1"
-                  onClick={() => router.push(`/manage-events/${event._id}`)}
-                >
-                  Edit
-                </button>
-                <button
-                  className="btn flex-1"
-                  style={{ background: '#b43d3d' }}
-                  onClick={() => remove(event._id)}
-                >
-                  Delete
-                </button>
-              </div>
-            )}
+          <div key={event._id} className="h-full">
+            <EventCard
+              event={event}
+              actions={
+                mode === 'manage' ? (
+                  <>
+                    <button
+                      className="btn btn-outline flex-1 text-sm"
+                      onClick={() => router.push(`/manage-events/${event._id}`)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="btn flex-1 text-sm"
+                      style={{ background: '#b43d3d' }}
+                      onClick={() => remove(event._id)}
+                    >
+                      Delete
+                    </button>
+                  </>
+                ) : undefined
+              }
+            />
           </div>
         ))}
       </div>

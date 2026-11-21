@@ -6,19 +6,9 @@ export type EventItem = {
   imageURL: string;
   location: string;
   eventDate: string;
+  creatorId?: string;
   creatorEmail: string;
+  creatorName?: string;
   createdAt?: string;
   updatedAt?: string;
-};
-
-export type JoinedEvent = {
-  _id: string;
-  eventId: string;
-  eventTitle: string;
-  eventDate: string;
-  eventImage: string;
-  location: string;
-  userEmail: string;
-  userName: string;
-  joinedAt: string;
 };

@@ -56,13 +56,7 @@ function EventDetails() {
     }
     setBusy(true);
     try {
-      await api(`/events/${id}/join`, {
-        method: 'POST',
-        body: JSON.stringify({
-          userEmail: session.user.email,
-          userName: session.user.name,
-        }),
-      });
+      await api(`/events/${id}/join`, { method: 'POST' });
       toast.success('You joined this event!');
     } catch (error) {
       toast.error(error instanceof Error ? error.message : 'Could not join event');
