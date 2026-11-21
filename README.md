@@ -1,36 +1,88 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Kindora — Community Volunteering Platform
+
+**Kindora** is a community volunteering platform that helps neighbours turn good intentions into shared action. Discover local initiatives, create your own, and join hands with people who care about the same causes.
+
+**Live site:** https://your-live-site-url.com
+
+> Replace the URL above with your deployed site link before submitting.
+
+## Features
+
+- **Discover local events** — Browse upcoming cleanups, plantations, donation drives, education and health initiatives happening near you.
+- **Search & filter** — Find an event instantly by title or location and narrow results by event type (Cleanup, Plantation, Donation, Education, Health, Other).
+- **Create your own initiative** — Publish a community event with a title, description, type, image, location and date, all from a single form.
+- **One-click joining** — Join any event with a single click and keep track of everything you have signed up for.
+- **Manage your events** — View the events you created, edit their details, or delete them. Edit and delete actions live right inside each event card.
+- **Personal dashboards** — Dedicated "Events you joined" and "Manage your events" pages, protected so you only ever see your own data.
+- **Secure authentication** — Email/password sign-up and sign-in powered by better-auth, with JWT-protected API requests and owner-only editing.
+- **Dark & light theme** — A polished, fully responsive design system that adapts to the user's preferred colour scheme.
+
+## Tech Stack
+
+- **Framework:** Next.js 16 (App Router, React 19, React Compiler, Cache Components)
+- **Styling:** Tailwind CSS v4 + a hand-rolled design system (`src/app/globals.css`)
+- **Auth:** [better-auth](https://www.better-auth.com) with the JWT plugin, backed by MongoDB
+- **Database:** MongoDB
+- **API:** Sibling Express API (`../togetherly-server`, port 5000)
+- **UI extras:** lucide-react icons, react-hot-toast notifications, next-themes
 
 ## Getting Started
 
-First, run the development server:
+### 1. Install dependencies
+
+```bash
+npm install
+```
+
+### 2. Configure environment variables
+
+Create a `.env` file in the project root:
+
+```env
+MONGODB_URL=your-mongodb-connection-string
+BETTER_AUTH_SECRET=your-auth-secret
+BETTER_AUTH_URL=http://localhost:3000
+NEXT_PUBLIC_BETTER_AUTH_URL=http://localhost:3000
+NEXT_PUBLIC_API_URL=http://localhost:5000/api
+```
+
+### 3. Start the API server
+
+The data API lives in the sibling repository:
+
+```bash
+cd ../togetherly-server
+node index.js
+```
+
+### 4. Run the app
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Available Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Command         | Description                     |
+| --------------- | ------------------------------- |
+| `npm run dev`   | Start the development server    |
+| `npm run build` | Create a production build       |
+| `npm run start` | Run the production build        |
+| `npm run lint`  | Lint the project with ESLint    |
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/
+├── app/                 # App Router pages (events, create-event, manage-events, profile, auth)
+│   └── api/auth/        # better-auth catch-all route handler
+├── components/          # Navbar, footer, event cards and home sections
+├── lib/                 # API client, auth client and server auth config
+└── types/               # Shared TypeScript types
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project was built for learning and community impact.
