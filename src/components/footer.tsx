@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { HeartHandshake,  ArrowUpRight } from 'lucide-react';
+import { HeartHandshake, ArrowUpRight } from 'lucide-react';
 export function Footer() {
   return (
     <footer style={{ background: '#10271d', color: '#f3f8f3' }} className="mt-10">
@@ -33,10 +33,7 @@ export function Footer() {
           >
             hello@kindora.community <ArrowUpRight size={15} />
           </a>
-          <div className="mt-5 flex gap-3">
-            {/* <Instagram />
-            <Facebook /> */}
-          </div>
+          <div className="mt-5 flex gap-3"></div>
         </div>
       </div>
       <div className="border-t border-white/15 py-5 text-center text-xs text-white/50">
