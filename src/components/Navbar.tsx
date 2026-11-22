@@ -12,9 +12,18 @@ export function Navbar() {
   const router = useRouter();
   const user = session?.user;
   async function logout() {
-    await authClient.signOut();
-    toast.success('You have signed out');
-    router.push('/');
+    try {
+      const result = await authClient.signOut();
+      if (result.error) {
+        toast.error(result.error.message || 'Could not sign out');
+        return;
+      }
+      toast.success('You have signed out');
+      router.push('/');
+      router.refresh();
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Could not sign out');
+    }
   }
   return (
     <header style={{ borderBottom: '1px solid var(--line)', background: 'var(--bg)' }}>

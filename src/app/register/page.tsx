@@ -1,9 +1,11 @@
 'use client';
+
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { authClient } from '@/lib/auth-client';
+
 export default function Register() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -11,22 +13,44 @@ export default function Register() {
   const [password, setPassword] = useState('');
   const [busy, setBusy] = useState(false);
   const router = useRouter();
+  const { data: session, isPending } = authClient.useSession();
+
+  useEffect(() => {
+    if (!isPending && session) router.replace('/');
+  }, [session, isPending, router]);
+
   async function submit(e: React.FormEvent) {
     e.preventDefault();
+    if (busy) return;
+
     if (!/[A-Z]/.test(password) || !/[a-z]/.test(password) || password.length < 6) {
       toast.error('Password needs uppercase, lowercase and at least 6 characters');
       return;
     }
+
     setBusy(true);
-    const r = await authClient.signUp.email({ name, email, password, image });
-    setBusy(false);
-    if (r.error) {
-      toast.error(r.error.message || 'Registration failed');
-      return;
+    try {
+      const r = await authClient.signUp.email({
+        name: name.trim(),
+        email: email.trim(),
+        password,
+        image: image.trim(),
+      });
+
+      if (r.error) {
+        toast.error(r.error.message || 'Registration failed');
+        return;
+      }
+
+      toast.success('Account created successfully');
+      router.push('/');
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Registration failed');
+    } finally {
+      setBusy(false);
     }
-    toast.success('Account created successfully');
-    router.push('/');
   }
+
   return (
     <section className="container section max-w-xl">
       <div className="card p-8 md:p-10">
@@ -37,6 +61,7 @@ export default function Register() {
             Full name
             <input
               className="field mt-2"
+              autoComplete="name"
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -47,6 +72,7 @@ export default function Register() {
             <input
               className="field mt-2"
               type="email"
+              autoComplete="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -67,7 +93,9 @@ export default function Register() {
             <input
               className="field mt-2"
               type="password"
+              autoComplete="new-password"
               required
+              minLength={6}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
