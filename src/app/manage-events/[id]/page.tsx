@@ -66,7 +66,10 @@ function EditEvent() {
     };
   }, [session, isPending, id, router]);
 
-  function set(key: 'title' | 'description' | 'eventType' | 'imageURL' | 'location' | 'eventDate', value: string) {
+  function set(
+    key: 'title' | 'description' | 'eventType' | 'imageURL' | 'location' | 'eventDate',
+    value: string
+  ) {
     setEvent((previous) => (previous ? { ...previous, [key]: value } : previous));
   }
 
@@ -159,7 +162,7 @@ function EditEvent() {
           value={event.description}
           onChange={(e) => set('description', e.target.value)}
         />
-        <button className="btn">Save changes</button>
+        <button className="btn">Save</button>
       </form>
     </section>
   );
