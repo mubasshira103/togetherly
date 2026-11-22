@@ -1,10 +1,9 @@
-git import Link from 'next/link';
+import Link from 'next/link';
 import { ArrowRight, HeartHandshake } from 'lucide-react';
 
 export default function HeroSection() {
   return (
     <section className="container grid items-center gap-10 py-14 md:grid-cols-[1.02fr_.98fr] md:py-20">
-      {/* Left Side */}
       <div>
         <span className="eyebrow">Good things happen together</span>
 
