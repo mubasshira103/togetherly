@@ -1,5 +1,4 @@
-
-import Link from 'next/link';
+git import Link from 'next/link';
 import { ArrowRight, HeartHandshake } from 'lucide-react';
 
 export default function HeroSection() {
@@ -10,8 +9,7 @@ export default function HeroSection() {
         <span className="eyebrow">Good things happen together</span>
 
         <h1 className="mt-5 max-w-2xl text-5xl font-black leading-[1.08] tracking-tight md:text-7xl">
-          Make room for{' '}
-          <span style={{ color: 'var(--green)' }}>good</span> in your neighbourhood.
+          Make Room For <span style={{ color: 'var(--green)' }}>Good</span> in your neighbourhood.
         </h1>
 
         <p className="mt-6 max-w-xl text-base leading-8 muted">
@@ -71,9 +69,7 @@ export default function HeroSection() {
             <b className="text-sm">Your next good day starts here.</b>
           </div>
 
-          <p className="mt-2 text-xs muted">
-            Find a cause close to your heart.
-          </p>
+          <p className="mt-2 text-xs muted">Find a cause close to your heart.</p>
         </div>
       </div>
     </section>
