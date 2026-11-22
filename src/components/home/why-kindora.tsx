@@ -1,5 +1,4 @@
 import { Users, Leaf, HandHeart } from 'lucide-react';
-
 const features = [
   {
     icon: Users,
