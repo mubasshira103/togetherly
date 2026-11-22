@@ -1,7 +1,7 @@
 
 'use client';
 import Link from 'next/link';
-import { useTheme } from 'next-themes';
+import { useTheme } from './ThemeProvider';
 import { Moon, Sun, HeartHandshake, ChevronDown, LogOut, UserRound } from 'lucide-react';
 import { authClient } from '@/lib/auth-client';
 import { useRouter } from 'next/navigation';

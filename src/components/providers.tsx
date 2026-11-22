@@ -1,9 +1,9 @@
 'use client';
-import { ThemeProvider } from 'next-themes';
+import { ThemeProvider } from './ThemeProvider';
 import { Toaster } from 'react-hot-toast';
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+    <ThemeProvider>
       <>
         {children}
         <Toaster position="top-right" />
